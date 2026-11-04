@@ -3,9 +3,6 @@ type: "Concept"
 title: "Chat Models: Core Abstractions and Protocol"
 description: "Chat models are the fundamental abstraction for conversational AI in LangChain. This page documents the base class contract, lifecycle phases, message I/O semantics, streaming protocol, and integration boundaries."
 tags: ["chat-models", "language-models", "streaming", "tool-calling", "caching", "callbacks"]
-verified:
-  - by: openwiki/0.5.0
-    at: 2026-10-29T08:20:01.046Z
 sources:
   - id: openwiki-source-c52037e7b642f7ac5a7642a8
     resource: repo://libs/core/langchain_core/language_models/chat_models.py
@@ -15,9 +12,10 @@ sources:
     resource: repo://libs/langchain_v1/langchain/chat_models/base.py
   - id: openwiki-source-7de1ace618efbdfd8bacb5cb
     resource: repo://libs/partners/anthropic/langchain_anthropic/chat_models.py
-  - id: openwiki-source-738512768ef81ae009b097ac
-    resource: repo://libs/partners/openai/langchain_openai/chat_models/base.py
-generated: { by: "openwiki/0.5.0", at: "2026-10-29T08:20:01.046Z" }
+generated: { by: "openwiki/0.5.0", at: "2026-11-04T08:17:21.019Z" }
+verified:
+  - by: openwiki/0.5.0
+    at: 2026-11-04T08:17:21.019Z
 ---
 
 # Chat Models: Core Abstractions and Protocol
@@ -246,6 +244,28 @@ Subclasses override `_get_ls_params()` to map provider-specific model identifier
 ### Model Profiles
 
 The optional `profile` field carries capability metadata (context window, supported modalities, tool-calling support, structured output capability). Profiles are auto-loaded via `_resolve_model_profile()` from partner package data if not explicitly provided. This enables runtime capability checks and routing decisions.
+
+## Provider Implementations
+
+### OpenAI Provider (ChatOpenAI)
+
+The OpenAI provider (`langchain_openai.ChatOpenAI`) implements the `BaseChatModel` contract with OpenAI-specific logic:
+
+**Message Conversion**:
+- Converts `BaseMessage` objects to OpenAI API format via `_convert_message_to_dict()`, mapping LangChain message types to `role`/`content` dicts.
+- Converts API responses back via `_convert_dict_to_message()`, extracting tool calls from both `function_call` (legacy) and `tool_calls` (current) fields.
+- Supports vision/image content blocks in `image_url` format with optional detail levels.
+- Handles audio content blocks, preserving audio IDs across multi-turn conversations.
+
+**Structured Output Support**:
+- Implements `with_structured_output()` with three methods: `'function_calling'` (tool-based), `'json_schema'` (native structured outputs), and `'json_mode'` (JSON-format responses).
+- Auto-downgrades `json_schema` to `function_calling` for older models (gpt-3.x, gpt-4, gpt-4-*) that lack structured output support.
+- Returns Pydantic instances or dicts depending on schema type and `include_raw` flag.
+
+**Additional Features**:
+- Token counting with vision-aware logic for image detail levels and base64 encoding.
+- Support for prompt caching, reasoning, and retrieval-augmented generation via OpenAI's extended parameters.
+- Responses API integration for reasoning models (gpt-5-pro, gpt-5.x-pro).
 
 ## Extended: Configurable Models and Runtime Binding
 

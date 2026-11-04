@@ -14,10 +14,10 @@ sources:
     resource: repo://libs/core/langchain_core/language_models/model_profile.py
   - id: openwiki-source-c479d4fffee5cf62576699e4
     resource: repo://libs/langchain_v1/langchain/chat_models/base.py
-generated: { by: "openwiki/0.5.0", at: "2026-10-22T08:26:56.662Z" }
+generated: { by: "openwiki/0.5.0", at: "2026-11-04T08:17:21.019Z" }
 verified:
   - by: openwiki/0.5.0
-    at: 2026-10-29T08:20:01.046Z
+    at: 2026-11-04T08:17:21.019Z
 ---
 
 ## Overview
@@ -326,7 +326,7 @@ Inheritable metadata and LangSmith params are extracted via `_get_invocation_par
 
 ### with_structured_output()
 
-**Location**: `repo://libs/core/langchain_core/language_models/chat_models.py#L2385-L2565`
+**Location**: `repo://libs/core/langchain_core/language_models/chat_models.py#L2428-L2611`
 
 `with_structured_output()` wraps a chat model to constrain output to a specified schema:
 
@@ -353,7 +353,7 @@ def with_structured_output(
 
 ### bind_tools()
 
-**Location**: `repo://libs/core/langchain_core/language_models/chat_models.py#L2366-L2383`
+**Location**: `repo://libs/core/langchain_core/language_models/chat_models.py#L2409-L2426`
 
 ```python
 def bind_tools(

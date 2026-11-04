@@ -5,4 +5,4 @@
 - [Messages: Core Abstraction for LLM Conversations](messages.md) - Core message types (AIMessage, HumanMessage, ToolMessage, SystemMessage), content blocks, serialization, filtering utilities, notification metadata, and the message protocol at the heart of LangChain workflows.
 - [Prompts: Templating and Composability](prompts.md) - Prompt templates define message sequences and variable substitution patterns for language models. Covers template syntax, PromptValue routing, runnable integration, and few-shot learning with dynamic example selection.
 - [Runnables: Core Execution Abstraction](runnables.md) - Runnable is the foundational execution abstraction in LangChain. It defines a unified, composable interface for synchronous, asynchronous, batch, and streaming execution. Every LangChain component—prompts, models, parsers, retrievers, tools—is a Runnable, enabling declarative composition and uniform control flow.
-- [Bare decorator - infers schema from function signature](tools.md)
+- [Tools](tools.md) - Structured components that enable language models to interact with external systems through defined input schemas, validation, and execution logic.

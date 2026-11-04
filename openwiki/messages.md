@@ -26,10 +26,10 @@ sources:
     resource: repo://libs/core/langchain_core/messages/tool.py
   - id: openwiki-source-498a9586e021b126ab8a8b42
     resource: repo://libs/core/langchain_core/messages/utils.py
-generated: { by: "openwiki/0.5.0", at: "2026-09-08T08:27:09.597Z" }
+generated: { by: "openwiki/0.5.0", at: "2026-11-04T08:17:21.019Z" }
 verified:
   - by: openwiki/0.5.0
-    at: 2026-10-20T08:25:57.412Z
+    at: 2026-11-04T08:17:21.019Z
 ---
 
 ## Overview
@@ -150,6 +150,18 @@ Plain text output from a model. Annotations enable citations pointing to source 
 ```
 Chain-of-thought or intermediate reasoning from models like o1, o3, etc. Often extracted from `<think>` tags or provider-specific fields in `additional_kwargs`.
 
+**RefusalContentBlock**  
+```python
+{
+    "type": "refusal",
+    "refusal": str,
+    "id": str (optional),
+    "index": int | str (optional),
+    "extras": dict (optional),
+}
+```
+Represents an explicit refusal from the model. Providers report refusals differently (OpenAI returns refusal content blocks, Anthropic reports a refusal stop reason), but both are normalized as a `RefusalContentBlock` so callers can detect refusals without provider-specific code.
+
 **ToolCall**  
 ```python
 {
@@ -264,7 +276,7 @@ Holds provider-specific content that doesn't map to standard block types. Block 
 
 LangChain defines the following standard block types:
 
-- **Text output**: `TextContentBlock` (`type: "text"`), `ReasoningContentBlock` (`type: "reasoning"` for chain-of-thought)
+- **Text output**: `TextContentBlock` (`type: "text"`), `ReasoningContentBlock` (`type: "reasoning"` for chain-of-thought), `RefusalContentBlock` (`type: "refusal"` for model refusals)
 - **Tool invocation**: `ToolCall` (`type: "tool_call"`), `ToolCallChunk` (`type: "tool_call_chunk"` for streaming), `InvalidToolCall` (`type: "invalid_tool_call"` for parsing failures)
 - **Server-side tools**: `ServerToolCall` (`type: "server_tool_call"`), `ServerToolCallChunk` (`type: "server_tool_call_chunk"`), `ServerToolResult` (`type: "server_tool_result"`)
 - **Multimodal data**: `ImageContentBlock` (`type: "image"`), `AudioContentBlock` (`type: "audio"`), `VideoContentBlock` (`type: "video"`), `FileContentBlock` (`type: "file"`), `PlainTextContentBlock` (`type: "text-plain"`)

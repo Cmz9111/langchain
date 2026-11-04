@@ -38,10 +38,10 @@ sources:
     resource: repo://libs/core/tests/unit_tests/messages/test_notification.py
   - id: openwiki-source-5b54a79fff5b1358acd7d4f3
     resource: repo://libs/core/tests/unit_tests/test_messages.py
-generated: { by: "openwiki/0.5.0", at: "2026-10-30T08:19:17.669Z" }
+generated: { by: "openwiki/0.5.0", at: "2026-11-04T08:17:21.019Z" }
 verified:
   - by: openwiki/0.5.0
-    at: 2026-10-30T08:19:17.669Z
+    at: 2026-11-04T08:17:21.019Z
 ---
 
 # Messages: Core Abstraction for LLM Conversations
@@ -425,6 +425,21 @@ Server-side tool execution blocks (for models that execute tools themselves).
     "output": "..."
 }
 ```
+
+#### RefusalContentBlock
+Model's explicit refusal reported by the provider (e.g., OpenAI refusal content, Anthropic refusal stop reason).
+
+```python
+{
+    "type": "refusal",
+    "refusal": "I can't help with that request.",
+    "id": "lc_abc123"  # Optional unique ID
+}
+```
+
+**Fields**:
+- **`refusal`**: `str` — Human-readable refusal message.
+- **`id`** (optional): Unique identifier for this content block.
 
 #### NonStandardContentBlock
 Provider-specific content that doesn't map to standard blocks.

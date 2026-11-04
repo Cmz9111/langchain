@@ -50,10 +50,10 @@ sources:
     resource: repo://libs/partners/openai/langchain_openai/decisions/base.py
   - id: openwiki-source-bd29e79613d5f366a00068f5
     resource: repo://libs/standard-tests/langchain_tests/base.py
-generated: { by: "openwiki/0.5.0", at: "2026-10-30T08:19:17.669Z" }
+generated: { by: "openwiki/0.5.0", at: "2026-11-04T08:17:21.019Z" }
 verified:
   - by: openwiki/0.5.0
-    at: 2026-10-30T08:19:17.669Z
+    at: 2026-11-04T08:17:21.019Z
 ---
 
 ## Overview
@@ -119,7 +119,7 @@ Use this map to navigate directly to the code responsible for a given concept, u
 
 ```
 /libs/
-├── core/                           # langchain-core: Base abstractions (v1.7.1)
+├── core/                           # langchain-core: Base abstractions (v1.7.5)
 │   ├── langchain_core/
 │   │   ├── language_models/        # BaseChatModel and language model abstractions
 │   │   │   ├── chat_models.py      # Core chat model interface
@@ -296,7 +296,7 @@ Use this map to navigate directly to the code responsible for a given concept, u
 
 ## Architecture Layers
 
-### Layer 1: langchain-core (Base Abstractions, v1.7.3)
+### Layer 1: langchain-core (Base Abstractions, v1.7.5)
 Core interfaces and implementations used by all other packages:
 - **Message protocol**: AIMessage, HumanMessage, SystemMessage, ToolMessage with rich content blocks
 - **Runnable protocol**: Composable units with `invoke()`, `stream()`, `batch()` and async variants

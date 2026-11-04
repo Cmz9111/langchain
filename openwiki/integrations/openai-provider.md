@@ -3,15 +3,15 @@ type: "Reference"
 title: "OpenAI Provider Implementation"
 description: "Reference implementation of the partner pattern using OpenAI. Covers ChatModel implementation, message conversion, tool calling, structured output, vision support, and streaming."
 tags: ["chat-model", "openai", "tool-calling", "structured-output", "vision", "streaming", "partner-pattern"]
-verified:
-  - by: openwiki/0.5.0
-    at: 2026-10-29T08:20:01.046Z
 sources:
   - id: openwiki-source-738512768ef81ae009b097ac
     resource: repo://libs/partners/openai/langchain_openai/chat_models/base.py
   - id: openwiki-source-b65307f1d05bd74532af2eee
     resource: repo://libs/partners/openai/langchain_openai/decisions/base.py
-generated: { by: "openwiki/0.5.0", at: "2026-10-29T08:20:01.046Z" }
+generated: { by: "openwiki/0.5.0", at: "2026-11-04T08:17:21.019Z" }
+verified:
+  - by: openwiki/0.5.0
+    at: 2026-11-04T08:17:21.019Z
 ---
 
 # OpenAI Provider Implementation
@@ -521,7 +521,7 @@ The `with_structured_output()` method returns a wrapped model that parses respon
 def with_structured_output(
     self,
     schema: dict | type | None = None,
-    method: Literal["function_calling", "json_mode", "json_schema"] = "function_calling",
+    method: Literal["function_calling", "json_mode", "json_schema"] = "json_schema",
     include_raw: bool = False,
     strict: bool | None = None,
     tools: list | None = None,
@@ -529,9 +529,37 @@ def with_structured_output(
 ) -> Runnable[LanguageModelInput, dict | Any]:
 ```
 
+In `ChatOpenAI`, the default method is `"json_schema"` (uses OpenAI's Structured Output API). In `BaseChatOpenAI`, the default is `"function_calling"` for compatibility with older models.
+
 ### Method Comparison
 
-**1. Function Calling (Default)**
+**1. JSON Schema (Default for ChatOpenAI, Recommended)**
+
+Uses OpenAI's Structured Output API for guaranteed schema conformance:
+
+```python
+from pydantic import BaseModel, Field
+
+class Joke(BaseModel):
+    """A joke."""
+    setup: str = Field(description="Setup of the joke")
+    punchline: str = Field(description="Punchline")
+    rating: int = Field(ge=1, le=10, description="Rating 1-10")
+
+model = ChatOpenAI(model="gpt-4o", temperature=0)
+structured_model = model.with_structured_output(Joke)
+
+joke = structured_model.invoke("Tell me a joke about cats")
+```
+
+**Characteristics:**
+- Guarantees schema conformance (OpenAI validates model output).
+- Requires a model supporting structured output (GPT-4 Turbo+, GPT-4o, gpt-5.x).
+- Supports both Pydantic V2 and JSON schemas.
+- Can include `strict=True` for additional validation.
+- Supports `tools` parameter to allow tool invocation alongside structured output.
+
+**2. Function Calling (Default for BaseChatOpenAI)**
 
 Uses tool-calling API; schema is treated as a function to "call":
 
@@ -545,7 +573,11 @@ class Joke(BaseModel):
     rating: int = Field(ge=1, le=10, description="Rating 1-10")
 
 model = ChatOpenAI(model="gpt-4.1-mini", temperature=0)
-structured_model = model.with_structured_output(Joke)
+# Explicitly use function_calling when needed for older models
+structured_model = model.with_structured_output(
+    Joke,
+    method="function_calling"
+)
 
 joke = structured_model.invoke("Tell me a joke about cats")
 ```
@@ -555,27 +587,6 @@ joke = structured_model.invoke("Tell me a joke about cats")
 - Less strict; schema is guidance, not a guarantee.
 - Uses `bind_tools()` internally, then parses the tool call.
 - Supports Pydantic V1 and V2.
-
-**2. JSON Schema (Recommended for Structured Output)**
-
-Uses OpenAI's Structured Output API for guaranteed schema conformance:
-
-```python
-structured_model = model.with_structured_output(
-    Joke,
-    method="json_schema"
-)
-
-joke = structured_model.invoke("Tell me a joke about cats")
-print(joke.setup)  # Returns Pydantic instance
-```
-
-**Characteristics:**
-- Guarantees schema conformance (OpenAI validates model output).
-- Requires a model supporting structured output (GPT-4 Turbo+, GPT-4o, gpt-5.x).
-- Supports both Pydantic V2 and JSON schemas.
-- Can include `strict=True` for additional validation.
-- Supports `tools` parameter to allow tool invocation alongside structured output.
 
 **3. JSON Mode**
 

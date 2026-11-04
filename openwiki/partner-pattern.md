@@ -36,10 +36,10 @@ sources:
     resource: repo://libs/partners/openai/tests/unit_tests/chat_models/test_responses_standard.py
   - id: openwiki-source-025cad4ae99967890152b7e0
     resource: repo://libs/standard-tests/README.md
-generated: { by: "openwiki/0.5.0", at: "2026-10-24T08:22:45.862Z" }
+generated: { by: "openwiki/0.5.0", at: "2026-11-04T08:17:21.019Z" }
 verified:
   - by: openwiki/0.5.0
-    at: 2026-10-29T08:20:01.046Z
+    at: 2026-11-04T08:17:21.019Z
 ---
 
 ## Overview
@@ -108,7 +108,7 @@ requires-python = ">=3.10.0,<4.0.0"
 version = "0.1.0"
 
 dependencies = [
-    "langchain-core>=1.6.10,<2.0.0",          # Required: base LangChain (current minimum)
+    "langchain-core>=1.7.0,<2.0.0",           # Required: base LangChain (minimum version)
     "provider-client-library>=2.45.0",        # Provider's own SDK (pinned minimum version)
     "certifi>=2024.6.2",                      # SSL certificates
 ]
@@ -143,6 +143,7 @@ constraint-dependencies = ["urllib3>=2.6.3", "pygments>=2.20.0"]
 - **Add version constraints to all test dependencies** for reproducibility
 - **Use `[tool.uv.sources]`** to reference local LangChain packages in monorepo
 - **Separate integration test dependencies** in a dedicated group (only needed in CI)
+- **Match langchain-core versions to provider implementations**: Check live pyproject.toml files as versions evolve (e.g., Anthropic uses `>=1.7.3`, OpenAI uses `>=1.7.0`)
 
 ## 2. ChatModel Implementation
 

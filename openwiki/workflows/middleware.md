@@ -3,9 +3,6 @@ type: "Workflow"
 title: "Middleware: Extensible Request Processing"
 description: "Middleware system for composing agent behavior. Covers middleware interface, execution order, state management, and patterns for routing, logging, and tool control."
 tags: ["agents", "middleware", "composition", "hooks", "extensibility", "request-handling"]
-verified:
-  - by: openwiki/0.5.0
-    at: 2026-10-25T08:23:03.589Z
 sources:
   - id: openwiki-source-07e634f5cd5f00c636010306
     resource: repo://libs/langchain_v1/langchain/agents/middleware/__init__.py
@@ -13,7 +10,10 @@ sources:
     resource: repo://libs/langchain_v1/langchain/agents/middleware/tool_error.py
   - id: openwiki-source-03e8ca0eebe37feda8566793
     resource: repo://libs/langchain_v1/langchain/agents/middleware/types.py
-generated: { by: "openwiki/0.5.0", at: "2026-10-25T08:23:03.589Z" }
+generated: { by: "openwiki/0.5.0", at: "2026-11-04T08:17:21.019Z" }
+verified:
+  - by: openwiki/0.5.0
+    at: 2026-11-04T08:17:21.019Z
 ---
 
 # Middleware: Extensible Request Processing
@@ -608,13 +608,18 @@ LangChain provides production-ready middleware for common needs:
 - **`ToolErrorMiddleware`**: Convert tool exceptions to error `ToolMessage`s (opt-in per exception).
 - **`ModelCallLimitMiddleware`**: Enforce maximum model calls per agent run.
 - **`ToolCallLimitMiddleware`**: Enforce maximum tool calls per agent run.
-- **`ToolErrorMiddleware`**: Handle and format tool execution errors.
 - **`HumanInTheLoopMiddleware`**: Interrupt execution for human review/approval.
 - **`LLMToolSelectorMiddleware`**: Use a smaller LLM to filter to the most relevant tools.
 - **`ModelFallbackMiddleware`**: Fallback to alternative models on primary model failure.
+- **`ModelRefusalMiddleware`**: Detect and handle model refusals.
 - **`PIIMiddleware`**: Detect and redact personally identifiable information.
 - **`ShellToolMiddleware`**: Sandboxed shell execution with resource limits.
 - **`SummarizationMiddleware`**: Summarize message history to manage context window.
+- **`ContextEditingMiddleware`**: Edit and manage agent context during execution.
+- **`FilesystemFileSearchMiddleware`**: Search and retrieve files from the filesystem.
+- **`ProviderToolSearchMiddleware`**: Search for and select tools from external providers.
+- **`TodoListMiddleware`**: Manage a dynamic to-do list within agent execution.
+- **`LLMToolEmulator`**: Emulate tool behavior using an LLM instead of actual tool execution.
 
 For details, consult the API documentation and use examples in the middleware package.
 
